@@ -144,6 +144,8 @@
 
         const formData = new FormData(form);
         const data = {};
+        const token = localStorage.getItem('authToken');
+
 
         // List of checkbox fields that should always be arrays
         const multiValueFields = ['skinTypes', 'skinConditions'];
@@ -216,7 +218,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const clientId = urlParams.get('id');
       const buttonGroup = document.querySelector('.button-group');
-
+      const token = localStorage.getItem('authToken');
       if (clientId) {
         fetch(`https://facenote.onrender.com/client?id=${clientId}`, {
   headers: {

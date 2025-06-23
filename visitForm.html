@@ -99,6 +99,7 @@ document.getElementById('visitForm').addEventListener('submit', async function (
   const form = event.target;
   const imageInput = form.image;
   const imageFile = imageInput.files[0];
+  const token = localStorage.getItem('authToken');
 
   const urlParams = new URLSearchParams(window.location.search);
   const visitId = urlParams.get('visitId');
@@ -163,7 +164,8 @@ function toBase64(file) {
   });
 }
   const visitId = urlParams.get('visitId');
-
+  const token = localStorage.getItem('authToken');
+  
   if (visitId) {
     fetch(`https://facenote.onrender.com/client/treatment?id=${visitId}`, {
   headers: {

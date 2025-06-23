@@ -39,7 +39,8 @@
   }
 });
     const clientListDiv = document.getElementById('clientList');
-
+    const token = localStorage.getItem('authToken');
+    
     async function loadClients() {
       const response = await fetch('https://facenote.onrender.com/client/all', {
   headers: {

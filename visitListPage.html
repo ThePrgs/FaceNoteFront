@@ -39,7 +39,8 @@
 });
     const urlParams = new URLSearchParams(window.location.search);
     const clientId = urlParams.get('id');
-
+    const token = localStorage.getItem('authToken');
+    
     async function loadVisits() {
       try {
         const response = await fetch(`https://facenote.onrender.com/client/treatments?id=${clientId}`, {
