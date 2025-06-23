@@ -183,7 +183,7 @@ form.addEventListener('submit', async function (event) {
   }
 
   try {
-    const response = await fetch('http://localhost:8070/client/save', {
+    const response = await fetch('https://facenote.onrender.com/client/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -212,7 +212,7 @@ form.addEventListener('submit', async function (event) {
     const buttonGroup = document.querySelector('.button-group');
     
 if (clientId) {
-  fetch(`http://localhost:8070/client?id=${clientId}`)
+  fetch(`https://facenote.onrender.com/client?id=${clientId}`)
     .then(res => res.json())
     .then(client => {
       for (const key in client) {
@@ -274,7 +274,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch('http://localhost:8070/login', {
+    const res = await fetch('https://facenote.onrender.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

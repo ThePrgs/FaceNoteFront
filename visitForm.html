@@ -133,7 +133,7 @@ document.getElementById('visitForm').addEventListener('submit', async function (
   };
 
   try {
-    const response = await fetch('http://localhost:8070/client/save/treatment', {
+    const response = await fetch('https://facenote.onrender.com/client/save/treatment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(jsonData)
@@ -162,7 +162,7 @@ function toBase64(file) {
   const visitId = urlParams.get('visitId');
 
   if (visitId) {
-    fetch(`http://localhost:8070/client/treatment?id=${visitId}`)
+    fetch(`https://facenote.onrender.com/client/treatment?id=${visitId}`)
       .then(res => res.json())
       .then(visit => {
         document.getElementById('date').value = visit.date.slice(0, 10); // Trim to yyyy-mm-dd
@@ -193,7 +193,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch('http://localhost:8070/login', {
+    const res = await fetch('https://facenote.onrender.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
