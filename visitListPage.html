@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popis Posjeta</title>
+<link rel="stylesheet" href="theme.css">
+
+</head>
+<body>
+   <div id="login-container">
+    <h2>Prijava</h2>
+    <form id="login-form">
+      <label for="username">Korisničko ime:</label>
+      <input type="text" id="username" required>
+      <label for="password">Lozinka:</label>
+      <input type="password" id="password" required>
+    </br>
+      <button type="submit">Prijavi se</button>
+    </form>
+    <p id="login-error" style="color: red; display: none;">Neispravni podaci za prijavu.</p>
+  </div>
+
+  <div id="app-content" style="display: none;">
+  <div class="top-bar">
+    <h1>Popis Posjeta Klijenta</h1>
+    <button onclick="goToNewVisit()">+ Novi Posjet</button>
+  </div>
+
+  <div class="visit-list" id="visitList"></div>
+
+  <script>
+        window.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('app-content').style.display = 'block';
+  }
+});
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientId = urlParams.get('id');
+
+    async function loadVisits() {
+      try {
+        const response = await fetch(`http://localhost:8070/client/treatments?id=${clientId}`);
+        const visits = await response.json();
+
+        const visitList = document.getElementById('visitList');
+        visits.forEach(visit => {
+          const div = document.createElement('div');
+          div.className = 'visit-item';
+          div.innerHTML = `
+            <strong>Datum:</strong> ${visit.date.slice(0, 10)}<br>
+            <strong>Vrsta:</strong> ${visit.treatmentType}
+          `;
+          div.onclick = () => {
+            window.location.href = `visitForm.html?clientId=${clientId}&visitId=${visit.id}`;
+          };
+          visitList.appendChild(div);
+        });
+      } catch (error) {
+        console.error('Greška pri dohvaćanju posjeta:', error);
+      }
+    }
+
+    function goToNewVisit() {
+      window.location.href = `visitForm.html?clientId=${clientId}`;
+    }
+
+    loadVisits();
+    window.addEventListener('pageshow', function (event) {
+  if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    window.location.reload();
+  }
+});
+document.getElementById('login-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  try {
+    const res = await fetch('http://localhost:8070/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (res.ok) {
+      const { token } = await res.json(); // or however your backend responds
+      localStorage.setItem('authToken', token);
+
+      // Show app, hide login
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('app-content').style.display = 'block';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  } catch (error) {
+    alert('Greška pri povezivanju sa serverom.');
+    console.error(error);
+  }
+});
+  </script>
+</div>
+</body>
+</html>
